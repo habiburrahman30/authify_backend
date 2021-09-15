@@ -6,12 +6,13 @@ import {
   Param,
   Patch,
   Post,
+  Put,
 } from '@nestjs/common';
 import { CompanyService } from '../services/company.service';
 
 @Controller('/api')
 export class CompanyController {
-  constructor(private readonly companyService: CompanyService) {}
+  constructor(private readonly companyService: CompanyService) { }
 
   @Post('/company')
   addCompany(@Body() body) {
@@ -33,7 +34,7 @@ export class CompanyController {
     return this.companyService.deleteCompanyById(id);
   }
 
-  @Patch('/company/:id')
+  @Put('/company/:id')
   updateCompanyById(@Body() body, @Param('id') id) {
     return this.companyService.updateCompanyById(body, id);
   }

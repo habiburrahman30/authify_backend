@@ -7,7 +7,7 @@ import { Company, CompanyDocument } from 'src/schemas/company.schema';
 export class CompanyService {
   constructor(
     @InjectModel(Company.name) private companyModel: Model<CompanyDocument>,
-  ) {}
+  ) { }
 
   async addCompany(body: any) {
     try {
@@ -17,9 +17,7 @@ export class CompanyService {
         logoImage: body['logoImage'],
       });
 
-      await company.save();
-
-      return 'Company added successfully';
+      return await company.save();
     } catch (error) {
       console.log(error);
     }
@@ -27,7 +25,7 @@ export class CompanyService {
 
   async getCompany() {
     try {
-      return this.companyModel.find();
+      return await this.companyModel.find().exec();
     } catch (error) {
       console.log(error);
     }
@@ -35,7 +33,7 @@ export class CompanyService {
 
   async getCompanyById(id) {
     try {
-      return this.companyModel.findById(id);
+      return await this.companyModel.findById(id).exec();
     } catch (error) {
       console.log(error);
     }
@@ -43,7 +41,7 @@ export class CompanyService {
 
   async deleteCompanyById(id) {
     try {
-      return this.companyModel.findOneAndDelete({ _id: id });
+      return await this.companyModel.findByIdAndDelete(id).exec();
     } catch (error) {
       console.log(error);
     }
@@ -52,12 +50,12 @@ export class CompanyService {
   async updateCompanyById(body, id) {
     try {
       console.log(body, id);
-      return;
-      return this.companyModel.findOneAndUpdate(
-        { _id: id },
-        { new: true },
+
+      return await this.companyModel.findByIdAndUpdate(
+        id,
         body,
-      );
+        { new: true }
+      ).exec();
     } catch (error) {
       console.log(error);
     }
