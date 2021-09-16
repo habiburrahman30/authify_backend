@@ -7,7 +7,7 @@ import { Company, CompanyDocument } from 'src/schemas/company.schema';
 export class CompanyService {
   constructor(
     @InjectModel(Company.name) private companyModel: Model<CompanyDocument>,
-  ) {}
+  ) { }
 
   async addCompany(body: any) {
     try {
@@ -18,11 +18,15 @@ export class CompanyService {
       });
       const company = await companyData.save();
 
+<<<<<<< HEAD
       return {
         msg: 'Company added successfully',
         data: company,
         success: true,
       };
+=======
+      return await company.save();
+>>>>>>> 120697b455dfd3e80739e867664bb4bb21a27b75
     } catch (error) {
       console.log(error);
     }
@@ -30,6 +34,7 @@ export class CompanyService {
 
   async getAllCompanys() {
     try {
+<<<<<<< HEAD
       const company = await this.companyModel.find().exec();
 
       return {
@@ -37,6 +42,9 @@ export class CompanyService {
         data: company,
         success: true,
       };
+=======
+      return await this.companyModel.find().exec();
+>>>>>>> 120697b455dfd3e80739e867664bb4bb21a27b75
     } catch (error) {
       console.log(error);
     }
@@ -52,6 +60,7 @@ export class CompanyService {
 
   async deleteCompanyById(id) {
     try {
+<<<<<<< HEAD
       const company = await this.companyModel.findByIdAndDelete(id).exec();
 
       return {
@@ -59,6 +68,9 @@ export class CompanyService {
         data: company,
         success: true,
       };
+=======
+      return await this.companyModel.findByIdAndDelete(id).exec();
+>>>>>>> 120697b455dfd3e80739e867664bb4bb21a27b75
     } catch (error) {
       console.log(error);
     }
@@ -66,6 +78,7 @@ export class CompanyService {
 
   async updateCompanyById(body, id) {
     try {
+<<<<<<< HEAD
       const company = await this.companyModel
         .findByIdAndUpdate(id, body, { new: true })
         .exec();
@@ -75,6 +88,15 @@ export class CompanyService {
         data: company,
         success: true,
       };
+=======
+      console.log(body, id);
+
+      return await this.companyModel.findByIdAndUpdate(
+        id,
+        body,
+        { new: true }
+      ).exec();
+>>>>>>> 120697b455dfd3e80739e867664bb4bb21a27b75
     } catch (error) {
       console.log(error);
     }

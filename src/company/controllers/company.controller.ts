@@ -11,7 +11,7 @@ import { CompanyService } from '../services/company.service';
 
 @Controller('/api')
 export class CompanyController {
-  constructor(private readonly companyService: CompanyService) {}
+  constructor(private readonly companyService: CompanyService) { }
 
   @Post('/company')
   addCompany(@Body() body) {
