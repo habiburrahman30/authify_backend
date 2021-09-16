@@ -4,8 +4,8 @@ import {
   Delete,
   Get,
   Param,
-  Patch,
   Post,
+  Put,
 } from '@nestjs/common';
 import { CompanyService } from '../services/company.service';
 
@@ -19,8 +19,8 @@ export class CompanyController {
   }
 
   @Get('/company')
-  getCompany() {
-    return this.companyService.getCompany();
+  getAllCompanys() {
+    return this.companyService.getAllCompanys();
   }
 
   @Get('/company/:id')
@@ -33,7 +33,7 @@ export class CompanyController {
     return this.companyService.deleteCompanyById(id);
   }
 
-  @Patch('/company/:id')
+  @Put('/company/:id')
   updateCompanyById(@Body() body, @Param('id') id) {
     return this.companyService.updateCompanyById(body, id);
   }

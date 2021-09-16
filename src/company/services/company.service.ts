@@ -11,23 +11,32 @@ export class CompanyService {
 
   async addCompany(body: any) {
     try {
-      const company = new this.companyModel({
+      const companyData = new this.companyModel({
         name: body['name'],
         adminEmail: body['adminEmail'],
         logoImage: body['logoImage'],
       });
+      const company = await companyData.save();
 
-      await company.save();
-
-      return 'Company added successfully';
+      return {
+        msg: 'Company added successfully',
+        data: company,
+        success: true,
+      };
     } catch (error) {
       console.log(error);
     }
   }
 
-  async getCompany() {
+  async getAllCompanys() {
     try {
-      return this.companyModel.find();
+      const company = await this.companyModel.find().exec();
+
+      return {
+        msg: 'All Companys',
+        data: company,
+        success: true,
+      };
     } catch (error) {
       console.log(error);
     }
@@ -35,7 +44,7 @@ export class CompanyService {
 
   async getCompanyById(id) {
     try {
-      return this.companyModel.findById(id);
+      return await this.companyModel.findById(id).exec();
     } catch (error) {
       console.log(error);
     }
@@ -43,7 +52,13 @@ export class CompanyService {
 
   async deleteCompanyById(id) {
     try {
-      return this.companyModel.findOneAndDelete({ _id: id });
+      const company = await this.companyModel.findByIdAndDelete(id).exec();
+
+      return {
+        msg: 'Company deleted successfully',
+        data: company,
+        success: true,
+      };
     } catch (error) {
       console.log(error);
     }
@@ -51,13 +66,15 @@ export class CompanyService {
 
   async updateCompanyById(body, id) {
     try {
-      console.log(body, id);
-      return;
-      return this.companyModel.findOneAndUpdate(
-        { _id: id },
-        { new: true },
-        body,
-      );
+      const company = await this.companyModel
+        .findByIdAndUpdate(id, body, { new: true })
+        .exec();
+
+      return {
+        msg: 'Company update successfully',
+        data: company,
+        success: true,
+      };
     } catch (error) {
       console.log(error);
     }

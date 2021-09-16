@@ -2,11 +2,12 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-// import { Company, CompanySchema } from './schemas/company.schema';
 import { ProductModule } from './product/product.module';
 import { UserModule } from './user/user.module';
 import { UniqueCodeModule } from './unique-code/unique-code.module';
 import { CompanyModule } from './company/company.module';
+import { CategoryModule } from './category/category.module';
+import { UserRoleModule } from './user-role/user-role.module';
 
 @Module({
   imports: [
@@ -17,6 +18,8 @@ import { CompanyModule } from './company/company.module';
     ProductModule,
     UserModule,
     UniqueCodeModule,
+    CategoryModule,
+    UserRoleModule,
   ],
   controllers: [AppController],
   providers: [AppService],
