@@ -6,7 +6,7 @@ export class UserDto {
   name: string;
 
   @IsString()
-  role: string;
+  roleId: string;
 
   @IsEmail()
   email: string;

@@ -4,19 +4,22 @@ import { Model } from 'mongoose';
 import { User, UserDocument } from 'src/schemas/user.schema';
 import * as bcrypt from 'bcrypt';
 import { UserDto } from 'src/dto/user.dto';
+import { IpService } from './ip.service';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>, private ipService: IpService) { }
 
   async addUser(userDto: UserDto) {
     try {
+      const ip = await this.ipService.getCurrentIp();
+
       const salt = bcrypt.genSaltSync(10);
       const passwordHash = bcrypt.hashSync(userDto.password, salt);
 
       const userData = new this.userModel({
         name: userDto.name,
-        role: userDto.role,
+        roleId: userDto.roleId,
         email: userDto.email,
         password: passwordHash,
         phone: userDto.phone,
@@ -24,7 +27,7 @@ export class UserService {
         recoveryEmail: userDto.recoveryEmail,
         thumbnail: userDto.thumbnail,
         lastLogin: this.getCurrentDate(),
-        ip: 'IpAddress',
+        ip: ip,
       });
       const user = await userData.save();
 
