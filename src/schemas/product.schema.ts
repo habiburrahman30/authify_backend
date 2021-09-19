@@ -6,7 +6,7 @@ export class Product {
   @Prop({
     required: true,
   })
-  category: string;
+  categoryId: string;
 
   @Prop({
     required: true,
@@ -21,6 +21,6 @@ export class Product {
   @Prop({
     required: true,
   })
-  image: string;
+  productImage: string;
 }
 export const ProductSchema = SchemaFactory.createForClass(Product);

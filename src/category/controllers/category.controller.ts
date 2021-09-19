@@ -3,10 +3,14 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Post,
   Put,
+  ValidationPipe,
 } from '@nestjs/common';
+import { CategoryDto } from 'src/dto/category.dto';
 import { CategoryService } from '../services/category.service';
 
 @Controller('/api')
@@ -14,8 +18,9 @@ export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
   @Post('/category')
-  addCategory(@Body() body) {
-    return this.categoryService.addCategory(body);
+  @HttpCode(HttpStatus.OK)
+  addCategory(@Body(new ValidationPipe()) categoryDto: CategoryDto): any {
+    return this.categoryService.addCategory(categoryDto);
   }
 
   @Get('/category')

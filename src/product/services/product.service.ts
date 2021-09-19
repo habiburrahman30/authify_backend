@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { ProductDto } from 'src/dto/product.dto';
 import { Product, ProductDocument } from 'src/schemas/product.schema';
 
 @Injectable()
@@ -9,13 +10,13 @@ export class ProductService {
     @InjectModel(Product.name) private productModel: Model<ProductDocument>,
   ) {}
 
-  async addProduct(body: any) {
+  async addProduct(productDto: ProductDto) {
     try {
       const productData = new this.productModel({
-        category: body['category'],
-        name: body['name'],
-        description: body['description'],
-        image: body['image'],
+        categoryId: productDto.categoryId,
+        name: productDto.name,
+        description: productDto.description,
+        productImage: productDto.productImage,
       });
       const product = await productData.save();
 
@@ -26,6 +27,7 @@ export class ProductService {
       };
     } catch (error) {
       console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
   }
 
@@ -40,6 +42,7 @@ export class ProductService {
       };
     } catch (error) {
       console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
   }
 
@@ -48,6 +51,7 @@ export class ProductService {
       return await this.productModel.findById(id).exec();
     } catch (error) {
       console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
   }
 
@@ -62,13 +66,14 @@ export class ProductService {
       };
     } catch (error) {
       console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
   }
 
-  async updateProductById(body, id) {
+  async updateProductById(productDto: ProductDto, id) {
     try {
       const product = await this.productModel
-        .findByIdAndUpdate(id, body, { new: true })
+        .findByIdAndUpdate(id, productDto, { new: true })
         .exec();
 
       return {
@@ -78,6 +83,7 @@ export class ProductService {
       };
     } catch (error) {
       console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
   }
 }

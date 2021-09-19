@@ -3,12 +3,14 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Post,
   Put,
+  ValidationPipe,
 } from '@nestjs/common';
 import { UserService } from '../services/user.service';
-import { IpAddress } from '../../decorator/ipAddress';
 import { UserDto } from 'src/dto/user.dto';
 
 @Controller('/api')
@@ -16,8 +18,9 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('/user')
-  addCompany(@Body() userDto: UserDto, @IpAddress() IpAddress): any {
-    return this.userService.addUser(userDto, IpAddress);
+  @HttpCode(HttpStatus.OK)
+  addCompany(@Body(new ValidationPipe()) userDto: UserDto): any {
+    return this.userService.addUser(userDto);
   }
 
   @Get('/user')

@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { UserRoleDto } from 'src/dto/user_role.dto';
 import { UserRole, UserRoleDocument } from 'src/schemas/user-role.schema';
 
 @Injectable()
@@ -10,10 +11,10 @@ export class UserRoleService {
     private userRoleModel: Model<UserRoleDocument>,
   ) {}
 
-  async addUserRole(body: any) {
+  async addUserRole(userRoleDto: UserRoleDto) {
     try {
       const userRoleData = new this.userRoleModel({
-        roleName: body['roleName'],
+        roleName: userRoleDto.roleName,
       });
       const userRole = await userRoleData.save();
 
@@ -24,6 +25,7 @@ export class UserRoleService {
       };
     } catch (error) {
       console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
   }
 
@@ -38,6 +40,7 @@ export class UserRoleService {
       };
     } catch (error) {
       console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
   }
 
@@ -46,6 +49,7 @@ export class UserRoleService {
       return await this.userRoleModel.findById(id).exec();
     } catch (error) {
       console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
   }
 
@@ -60,13 +64,14 @@ export class UserRoleService {
       };
     } catch (error) {
       console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
   }
 
-  async updateUserRoleById(body, id) {
+  async updateUserRoleById(userRoleDto: UserRoleDto, id) {
     try {
       const userRole = await this.userRoleModel
-        .findByIdAndUpdate(id, body, { new: true })
+        .findByIdAndUpdate(id, userRoleDto, { new: true })
         .exec();
 
       return {
@@ -76,6 +81,7 @@ export class UserRoleService {
       };
     } catch (error) {
       console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
   }
 }

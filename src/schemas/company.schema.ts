@@ -7,7 +7,6 @@ export class Company {
     required: true,
   })
   name: string;
-  // -
 
   @Prop({
     required: true,

@@ -1,7 +1,8 @@
-import { IsString, IsInt, IsEmail, Length } from 'class-validator';
+import { IsString, IsEmail, Length } from 'class-validator';
 
 export class UserDto {
   @IsString()
+  @Length(3, 30)
   name: string;
 
   @IsString()
@@ -14,24 +15,15 @@ export class UserDto {
   @Length(8)
   password: string;
 
-  @IsInt()
-  phone: number;
+  @IsString()
+  phone: string;
 
   @IsString()
   address: string;
 
   @IsString()
-  email2: string;
+  recoveryEmail: string;
 
   @IsString()
-  photo: string;
+  thumbnail: string;
 }
-
-//  name: body['name'],
-// role: body['role'],
-// email: body['email'],
-// password: passwordHash,
-// phone: body['phone'],
-// address: body['address'],
-// email2: body['email2'],
-// photo: body['photo'],

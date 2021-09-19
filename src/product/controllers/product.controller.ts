@@ -3,10 +3,14 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Post,
   Put,
+  ValidationPipe,
 } from '@nestjs/common';
+import { ProductDto } from 'src/dto/product.dto';
 import { ProductService } from '../services/product.service';
 
 @Controller('/api')
@@ -14,8 +18,9 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post('/product')
-  addProduct(@Body() body) {
-    return this.productService.addProduct(body);
+  @HttpCode(HttpStatus.OK)
+  addProduct(@Body(new ValidationPipe()) productDto: ProductDto): any {
+    return this.productService.addProduct(productDto);
   }
 
   @Get('/product')

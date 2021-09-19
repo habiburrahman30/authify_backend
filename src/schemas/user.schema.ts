@@ -6,54 +6,54 @@ export class User {
   @Prop({
     required: true,
   })
-  name: String;
+  name: string;
 
   @Prop({
     required: true,
   })
-  role: String;
-
-  @Prop({
-    required: true,
-    unique: true,
-  })
-  email: String;
-
-  @Prop({
-    required: true,
-  })
-  password: String;
+  role: string;
 
   @Prop({
     required: true,
     unique: true,
   })
-  phone: String;
+  email: string;
 
   @Prop({
     required: true,
   })
-  address: String;
+  password: string;
 
   @Prop({
     required: true,
     unique: true,
   })
-  email2: String;
+  phone: string;
 
   @Prop({
     required: true,
   })
-  photo: String;
+  address: string;
+
+  @Prop({
+    required: true,
+    unique: true,
+  })
+  recoveryEmail: string;
 
   @Prop({
     required: true,
   })
-  lastLogin: String;
+  thumbnail: string;
+
+  @Prop({
+    required: true,
+  })
+  lastLogin: string;
 
   @Prop({
     required: false,
   })
-  ip: String;
+  ip: string;
 }
 export const UserSchema = SchemaFactory.createForClass(User);

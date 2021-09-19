@@ -1,40 +1,37 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { CompanyDto } from 'src/dto/company.dto';
 import { Company, CompanyDocument } from 'src/schemas/company.schema';
 
 @Injectable()
 export class CompanyService {
   constructor(
     @InjectModel(Company.name) private companyModel: Model<CompanyDocument>,
-  ) { }
+  ) {}
 
-  async addCompany(body: any) {
+  async addCompany(companyDto: CompanyDto) {
     try {
       const companyData = new this.companyModel({
-        name: body['name'],
-        adminEmail: body['adminEmail'],
-        logoImage: body['logoImage'],
+        name: companyDto.name,
+        adminEmail: companyDto.adminEmail,
+        logoImage: companyDto.logoImage,
       });
       const company = await companyData.save();
 
-<<<<<<< HEAD
       return {
         msg: 'Company added successfully',
         data: company,
         success: true,
       };
-=======
-      return await company.save();
->>>>>>> 120697b455dfd3e80739e867664bb4bb21a27b75
     } catch (error) {
       console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
   }
 
   async getAllCompanys() {
     try {
-<<<<<<< HEAD
       const company = await this.companyModel.find().exec();
 
       return {
@@ -42,11 +39,9 @@ export class CompanyService {
         data: company,
         success: true,
       };
-=======
-      return await this.companyModel.find().exec();
->>>>>>> 120697b455dfd3e80739e867664bb4bb21a27b75
     } catch (error) {
       console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
   }
 
@@ -55,12 +50,12 @@ export class CompanyService {
       return await this.companyModel.findById(id).exec();
     } catch (error) {
       console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
   }
 
   async deleteCompanyById(id) {
     try {
-<<<<<<< HEAD
       const company = await this.companyModel.findByIdAndDelete(id).exec();
 
       return {
@@ -68,19 +63,16 @@ export class CompanyService {
         data: company,
         success: true,
       };
-=======
-      return await this.companyModel.findByIdAndDelete(id).exec();
->>>>>>> 120697b455dfd3e80739e867664bb4bb21a27b75
     } catch (error) {
       console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
   }
 
-  async updateCompanyById(body, id) {
+  async updateCompanyById(companyDto: CompanyDto, id) {
     try {
-<<<<<<< HEAD
       const company = await this.companyModel
-        .findByIdAndUpdate(id, body, { new: true })
+        .findByIdAndUpdate(id, companyDto, { new: true })
         .exec();
 
       return {
@@ -88,17 +80,9 @@ export class CompanyService {
         data: company,
         success: true,
       };
-=======
-      console.log(body, id);
-
-      return await this.companyModel.findByIdAndUpdate(
-        id,
-        body,
-        { new: true }
-      ).exec();
->>>>>>> 120697b455dfd3e80739e867664bb4bb21a27b75
     } catch (error) {
       console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
   }
 }

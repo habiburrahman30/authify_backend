@@ -6,7 +6,7 @@ export class UniqueCode {
   @Prop({
     required: true,
   })
-  product: string;
+  productId: string;
 
   @Prop({
     required: true,

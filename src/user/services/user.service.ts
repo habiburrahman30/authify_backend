@@ -1,16 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from 'src/schemas/user.schema';
 import * as bcrypt from 'bcrypt';
-import { parse } from 'querystring';
 import { UserDto } from 'src/dto/user.dto';
 
 @Injectable()
 export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  async addUser(userDto: UserDto, IpAddress) {
+  async addUser(userDto: UserDto) {
     try {
       const salt = bcrypt.genSaltSync(10);
       const passwordHash = bcrypt.hashSync(userDto.password, salt);
@@ -22,10 +21,10 @@ export class UserService {
         password: passwordHash,
         phone: userDto.phone,
         address: userDto.address,
-        email2: userDto.email2,
-        photo: userDto.photo,
-        lastLogin: new Date().toDateString(),
-        ip: IpAddress,
+        recoveryEmail: userDto.recoveryEmail,
+        thumbnail: userDto.thumbnail,
+        lastLogin: this.getCurrentDate(),
+        ip: 'IpAddress',
       });
       const user = await userData.save();
 
@@ -36,7 +35,7 @@ export class UserService {
       };
     } catch (error) {
       console.log(error.message);
-      return error.message;
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
   }
 
@@ -51,6 +50,7 @@ export class UserService {
       };
     } catch (error) {
       console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
   }
 
@@ -59,6 +59,7 @@ export class UserService {
       return await this.userModel.findById(id).exec();
     } catch (error) {
       console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
   }
 
@@ -73,13 +74,14 @@ export class UserService {
       };
     } catch (error) {
       console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
   }
 
-  async updateUserById(body, id) {
+  async updateUserById(userDto: UserDto, id) {
     try {
       const user = await this.userModel
-        .findByIdAndUpdate(id, body, { new: true })
+        .findByIdAndUpdate(id, userDto, { new: true })
         .exec();
 
       return {
@@ -89,6 +91,11 @@ export class UserService {
       };
     } catch (error) {
       console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
+  }
+
+  getCurrentDate() {
+    return new Date();
   }
 }

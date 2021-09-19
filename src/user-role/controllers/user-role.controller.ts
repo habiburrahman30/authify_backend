@@ -3,10 +3,14 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Post,
   Put,
+  ValidationPipe,
 } from '@nestjs/common';
+import { UserRoleDto } from 'src/dto/user_role.dto';
 import { UserRoleService } from '../services/user-role.service';
 
 @Controller('/api')
@@ -14,8 +18,9 @@ export class UserRoleController {
   constructor(private readonly userRoleService: UserRoleService) {}
 
   @Post('/user-role')
-  addUserRole(@Body() body) {
-    return this.userRoleService.addUserRole(body);
+  @HttpCode(HttpStatus.OK)
+  addUserRole(@Body(new ValidationPipe()) userRoleDto: UserRoleDto): any {
+    return this.userRoleService.addUserRole(userRoleDto);
   }
 
   @Get('/user-role')

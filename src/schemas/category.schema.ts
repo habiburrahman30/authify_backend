@@ -5,6 +5,7 @@ export type CategoryDocument = Category & Document;
 export class Category {
   @Prop({
     required: true,
+    unique: true,
   })
   name: string;
 }

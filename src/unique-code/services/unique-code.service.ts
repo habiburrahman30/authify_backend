@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { UniqueCodeDto } from 'src/dto/unique-code.dto';
 import { UniqueCode, UniqueCodeDocument } from 'src/schemas/unique-code.schema';
 
 @Injectable()
@@ -10,14 +11,14 @@ export class UniqueCodeService {
     private uniqueCodeModel: Model<UniqueCodeDocument>,
   ) {}
 
-  async addUniqueCode(body: any) {
+  async addUniqueCode(uniqueCodeDto: UniqueCodeDto) {
     try {
       const uniqueCodeData = new this.uniqueCodeModel({
-        product: body['product'],
-        code: body['code'],
-        isVerified: body['isVerified'],
-        verifyTime: body['verifyTime'],
-        deviceIp: body['deviceIp'],
+        productId: uniqueCodeDto.productId,
+        code: uniqueCodeDto.code,
+        isVerified: uniqueCodeDto.isVerified,
+        verifyTime: this.getCurrentDate(),
+        deviceIp: uniqueCodeDto.deviceIp,
       });
       const uniqueCode = await uniqueCodeData.save();
 
@@ -28,6 +29,7 @@ export class UniqueCodeService {
       };
     } catch (error) {
       console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
   }
 
@@ -42,6 +44,7 @@ export class UniqueCodeService {
       };
     } catch (error) {
       console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
   }
 
@@ -50,6 +53,7 @@ export class UniqueCodeService {
       return await this.uniqueCodeModel.findById(id).exec();
     } catch (error) {
       console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
   }
 
@@ -66,13 +70,14 @@ export class UniqueCodeService {
       };
     } catch (error) {
       console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
   }
 
-  async updateUniqueCodeById(body, id) {
+  async updateUniqueCodeById(uniqueCodeDto: UniqueCodeDto, id) {
     try {
       const uniqueCode = await this.uniqueCodeModel
-        .findByIdAndUpdate(id, body, { new: true })
+        .findByIdAndUpdate(id, uniqueCodeDto, { new: true })
         .exec();
 
       return {
@@ -82,6 +87,10 @@ export class UniqueCodeService {
       };
     } catch (error) {
       console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
+  }
+  getCurrentDate() {
+    return new Date();
   }
 }

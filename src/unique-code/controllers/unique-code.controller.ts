@@ -3,10 +3,14 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Post,
   Put,
+  ValidationPipe,
 } from '@nestjs/common';
+import { UniqueCodeDto } from 'src/dto/unique-code.dto';
 import { UniqueCodeService } from '../services/unique-code.service';
 
 @Controller('/api')
@@ -14,8 +18,9 @@ export class UniqueCodeController {
   constructor(private readonly uniqueCodeService: UniqueCodeService) {}
 
   @Post('/unique-code')
-  addUniqueCode(@Body() body) {
-    return this.uniqueCodeService.addUniqueCode(body);
+  @HttpCode(HttpStatus.OK)
+  addUniqueCode(@Body(new ValidationPipe()) uniqueCodeDto: UniqueCodeDto): any {
+    return this.uniqueCodeService.addUniqueCode(uniqueCodeDto);
   }
 
   @Get('/unique-code')

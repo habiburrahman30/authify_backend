@@ -3,19 +3,24 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Post,
   Put,
+  ValidationPipe,
 } from '@nestjs/common';
+import { CompanyDto } from 'src/dto/company.dto';
 import { CompanyService } from '../services/company.service';
 
 @Controller('/api')
 export class CompanyController {
-  constructor(private readonly companyService: CompanyService) { }
+  constructor(private readonly companyService: CompanyService) {}
 
   @Post('/company')
-  addCompany(@Body() body) {
-    return this.companyService.addCompany(body);
+  @HttpCode(HttpStatus.OK)
+  addCompany(@Body(new ValidationPipe()) companyDto: CompanyDto): any {
+    return this.companyService.addCompany(companyDto);
   }
 
   @Get('/company')

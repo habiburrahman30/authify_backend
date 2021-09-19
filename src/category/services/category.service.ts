@@ -1,7 +1,8 @@
 import { Category, CategoryDocument } from './../../schemas/category.schema';
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { CategoryDto } from 'src/dto/category.dto';
 
 @Injectable()
 export class CategoryService {
@@ -10,10 +11,10 @@ export class CategoryService {
     private categoryModel: Model<CategoryDocument>,
   ) {}
 
-  async addCategory(body: any) {
+  async addCategory(categoryDto: CategoryDto) {
     try {
       const categoryData = new this.categoryModel({
-        name: body['name'],
+        name: categoryDto.name,
       });
       const category = await categoryData.save();
 
@@ -24,6 +25,8 @@ export class CategoryService {
       };
     } catch (error) {
       console.log(error);
+
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
   }
 
@@ -38,6 +41,7 @@ export class CategoryService {
       };
     } catch (error) {
       console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
   }
 
@@ -46,6 +50,7 @@ export class CategoryService {
       return await this.categoryModel.findById(id).exec();
     } catch (error) {
       console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
   }
 
@@ -60,13 +65,14 @@ export class CategoryService {
       };
     } catch (error) {
       console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
   }
 
-  async updateCategoryById(body, id) {
+  async updateCategoryById(categoryDto: CategoryDto, id) {
     try {
       const category = await this.categoryModel
-        .findByIdAndUpdate(id, body, { new: true })
+        .findByIdAndUpdate(id, categoryDto, { new: true })
         .exec();
 
       return {
@@ -76,6 +82,7 @@ export class CategoryService {
       };
     } catch (error) {
       console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
   }
 }
