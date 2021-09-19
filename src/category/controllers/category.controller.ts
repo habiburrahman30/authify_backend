@@ -15,7 +15,7 @@ import { CategoryService } from '../services/category.service';
 
 @Controller('/api')
 export class CategoryController {
-  constructor(private readonly categoryService: CategoryService) {}
+  constructor(private readonly categoryService: CategoryService) { }
 
   @Post('/category')
   @HttpCode(HttpStatus.OK)
@@ -39,7 +39,7 @@ export class CategoryController {
   }
 
   @Put('/category/:id')
-  updateCategoryById(@Body() body, @Param('id') id) {
-    return this.categoryService.updateCategoryById(body, id);
+  updateCategoryById(@Body(new ValidationPipe()) categoryDto: CategoryDto, @Param('id') id) {
+    return this.categoryService.updateCategoryById(categoryDto, id);
   }
 }

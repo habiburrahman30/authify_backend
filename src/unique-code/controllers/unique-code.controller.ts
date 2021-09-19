@@ -15,7 +15,7 @@ import { UniqueCodeService } from '../services/unique-code.service';
 
 @Controller('/api')
 export class UniqueCodeController {
-  constructor(private readonly uniqueCodeService: UniqueCodeService) {}
+  constructor(private readonly uniqueCodeService: UniqueCodeService) { }
 
   @Post('/unique-code')
   @HttpCode(HttpStatus.OK)
@@ -39,7 +39,7 @@ export class UniqueCodeController {
   }
 
   @Put('/unique-code/:id')
-  updateUniqueCodeById(@Body() body, @Param('id') id) {
-    return this.uniqueCodeService.updateUniqueCodeById(body, id);
+  updateUniqueCodeById(@Body(new ValidationPipe()) uniqueCodeDto: UniqueCodeDto, @Param('id') id) {
+    return this.uniqueCodeService.updateUniqueCodeById(uniqueCodeDto, id);
   }
 }

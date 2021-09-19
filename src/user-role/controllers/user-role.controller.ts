@@ -15,7 +15,7 @@ import { UserRoleService } from '../services/user-role.service';
 
 @Controller('/api')
 export class UserRoleController {
-  constructor(private readonly userRoleService: UserRoleService) {}
+  constructor(private readonly userRoleService: UserRoleService) { }
 
   @Post('/user-role')
   @HttpCode(HttpStatus.OK)
@@ -39,7 +39,7 @@ export class UserRoleController {
   }
 
   @Put('/user-role/:id')
-  updateUserRoleById(@Body() body, @Param('id') id) {
-    return this.userRoleService.updateUserRoleById(body, id);
+  updateUserRoleById(@Body(new ValidationPipe()) userRoleDto: UserRoleDto, @Param('id') id) {
+    return this.userRoleService.updateUserRoleById(userRoleDto, id);
   }
 }

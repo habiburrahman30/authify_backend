@@ -15,7 +15,7 @@ import { UserDto } from 'src/dto/user.dto';
 
 @Controller('/api')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @Post('/user')
   @HttpCode(HttpStatus.OK)
@@ -39,7 +39,7 @@ export class UserController {
   }
 
   @Put('/user/:id')
-  updateUserById(@Body() body, @Param('id') id) {
-    return this.userService.updateUserById(body, id);
+  updateUserById(@Body(new ValidationPipe()) userDto: UserDto, @Param('id') id) {
+    return this.userService.updateUserById(userDto, id);
   }
 }
