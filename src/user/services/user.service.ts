@@ -8,7 +8,10 @@ import { IpService } from './ip.service';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>, private ipService: IpService) { }
+  constructor(
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
+    private ipService: IpService,
+  ) {}
 
   async addUser(userDto: UserDto) {
     try {

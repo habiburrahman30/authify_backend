@@ -9,7 +9,4 @@ export class UniqueCodeDto {
 
   @IsBoolean()
   isVerified: boolean;
-
-  @IsString()
-  deviceIp: string;
 }

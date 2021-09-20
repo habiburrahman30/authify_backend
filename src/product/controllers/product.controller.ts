@@ -15,7 +15,7 @@ import { ProductService } from '../services/product.service';
 
 @Controller('/api')
 export class ProductController {
-  constructor(private readonly productService: ProductService) { }
+  constructor(private readonly productService: ProductService) {}
 
   @Post('/product')
   @HttpCode(HttpStatus.OK)
@@ -39,7 +39,10 @@ export class ProductController {
   }
 
   @Put('/product/:id')
-  updateProductById(@Body(new ValidationPipe()) productDto: ProductDto, @Param('id') id) {
+  updateProductById(
+    @Body(new ValidationPipe()) productDto: ProductDto,
+    @Param('id') id,
+  ) {
     return this.productService.updateProductById(productDto, id);
   }
 }

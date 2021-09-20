@@ -5,6 +5,7 @@ export type UniqueCodeDocument = UniqueCode & Document;
 export class UniqueCode {
   @Prop({
     required: true,
+    unique: true,
   })
   productId: string;
 

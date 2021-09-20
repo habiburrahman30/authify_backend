@@ -10,12 +10,13 @@ import {
   Put,
   ValidationPipe,
 } from '@nestjs/common';
+import { GenerateUniqueCodeDto } from 'src/dto/generate-unique-code.dto';
 import { UniqueCodeDto } from 'src/dto/unique-code.dto';
 import { UniqueCodeService } from '../services/unique-code.service';
 
 @Controller('/api')
 export class UniqueCodeController {
-  constructor(private readonly uniqueCodeService: UniqueCodeService) { }
+  constructor(private readonly uniqueCodeService: UniqueCodeService) {}
 
   @Post('/unique-code')
   @HttpCode(HttpStatus.OK)
@@ -39,7 +40,22 @@ export class UniqueCodeController {
   }
 
   @Put('/unique-code/:id')
-  updateUniqueCodeById(@Body(new ValidationPipe()) uniqueCodeDto: UniqueCodeDto, @Param('id') id) {
+  updateUniqueCodeById(
+    @Body(new ValidationPipe()) uniqueCodeDto: UniqueCodeDto,
+    @Param('id') id,
+  ) {
     return this.uniqueCodeService.updateUniqueCodeById(uniqueCodeDto, id);
+  }
+
+  @Post('/unique-code-match/:code')
+  matchUniqueCode(@Param('code') code) {
+    return this.uniqueCodeService.matchUniqueCode(code);
+  }
+
+  @Post('/unique-code-generate')
+  generateUniqueCode(
+    @Body(new ValidationPipe()) generateUniqueCodeDto: GenerateUniqueCodeDto,
+  ) {
+    return this.uniqueCodeService.generateUniqueCode(generateUniqueCodeDto);
   }
 }

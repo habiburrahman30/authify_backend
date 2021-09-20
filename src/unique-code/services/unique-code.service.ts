@@ -1,24 +1,28 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { GenerateUniqueCodeDto } from 'src/dto/generate-unique-code.dto';
 import { UniqueCodeDto } from 'src/dto/unique-code.dto';
 import { UniqueCode, UniqueCodeDocument } from 'src/schemas/unique-code.schema';
+import { IpService } from 'src/user/services/ip.service';
 
 @Injectable()
 export class UniqueCodeService {
   constructor(
     @InjectModel(UniqueCode.name)
     private uniqueCodeModel: Model<UniqueCodeDocument>,
+    private ipService: IpService,
   ) {}
 
   async addUniqueCode(uniqueCodeDto: UniqueCodeDto) {
     try {
+      const ip = await this.ipService.getCurrentIp();
       const uniqueCodeData = new this.uniqueCodeModel({
         productId: uniqueCodeDto.productId,
         code: uniqueCodeDto.code,
         isVerified: uniqueCodeDto.isVerified,
         verifyTime: this.getCurrentDate(),
-        deviceIp: uniqueCodeDto.deviceIp,
+        deviceIp: ip,
       });
       const uniqueCode = await uniqueCodeData.save();
 
@@ -83,6 +87,56 @@ export class UniqueCodeService {
       return {
         msg: 'Unique Code update successfully',
         data: uniqueCode,
+        success: true,
+      };
+    } catch (error) {
+      console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
+    }
+  }
+  async matchUniqueCode(code) {
+    try {
+      const uniqueCode = await this.uniqueCodeModel
+        .findOne({ code: code })
+        .exec();
+
+      if (uniqueCode && uniqueCode.isVerified == false) {
+        uniqueCode.isVerified = true;
+        await uniqueCode.save();
+        return {
+          msg: 'Unique Code verified successfully',
+          success: true,
+          status: HttpStatus.OK,
+        };
+      } else if (uniqueCode && uniqueCode.isVerified == true) {
+        return {
+          msg: 'Unique Code already used',
+          success: false,
+          status: HttpStatus.FORBIDDEN,
+        };
+      } else {
+        return {
+          msg: 'Unique Code invalid',
+          success: false,
+          status: HttpStatus.BAD_REQUEST,
+        };
+      }
+    } catch (error) {
+      console.log(error);
+      return { error: error.message, status: HttpStatus.BAD_REQUEST };
+    }
+  }
+  async generateUniqueCode(generateUniqueCodeDto: GenerateUniqueCodeDto) {
+    try {
+      const generateUniqueCodeData = new this.uniqueCodeModel({
+        companyId: generateUniqueCodeDto.companyId,
+        categoryId: generateUniqueCodeDto.categoryId,
+        productId: generateUniqueCodeDto.productId,
+      });
+      console.log(generateUniqueCodeData);
+      return {
+        msg: 'Generate unique code successfully',
+        data: generateUniqueCodeData,
         success: true,
       };
     } catch (error) {
