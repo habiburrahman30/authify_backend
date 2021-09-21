@@ -15,7 +15,7 @@ import { CompanyService } from '../services/company.service';
 
 @Controller('/api')
 export class CompanyController {
-  constructor(private readonly companyService: CompanyService) { }
+  constructor(private readonly companyService: CompanyService) {}
 
   @Post('/company')
   @HttpCode(HttpStatus.OK)
@@ -39,7 +39,10 @@ export class CompanyController {
   }
 
   @Put('/company/:id')
-  updateCompanyById(@Body(new ValidationPipe()) companyDto: CompanyDto, @Param('id') id) {
+  updateCompanyById(
+    @Body(new ValidationPipe()) companyDto: CompanyDto,
+    @Param('id') id,
+  ) {
     return this.companyService.updateCompanyById(companyDto, id);
   }
 }

@@ -140,6 +140,7 @@ export class UniqueCodeService {
         productId: generateUniqueCodeDto.productId,
       });
       console.log(generateUniqueCodeData);
+      // const generateUniqueCode = await uniqueCodeData.save();
       return {
         msg: 'Generate unique code successfully',
         data: generateUniqueCodeData,
