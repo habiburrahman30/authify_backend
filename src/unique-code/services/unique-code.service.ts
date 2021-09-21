@@ -3,6 +3,10 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { GenerateUniqueCodeDto } from 'src/dto/generate-unique-code.dto';
 import { UniqueCodeDto } from 'src/dto/unique-code.dto';
+import {
+  GenerateUniqueCode,
+  GenerateUniqueCodeDocument,
+} from 'src/schemas/generate-unique-code.schema';
 import { UniqueCode, UniqueCodeDocument } from 'src/schemas/unique-code.schema';
 import { IpService } from 'src/user/services/ip.service';
 
@@ -11,6 +15,8 @@ export class UniqueCodeService {
   constructor(
     @InjectModel(UniqueCode.name)
     private uniqueCodeModel: Model<UniqueCodeDocument>,
+    @InjectModel(GenerateUniqueCode.name)
+    private generateUniqueCodeDocument: Model<GenerateUniqueCodeDocument>,
     private ipService: IpService,
   ) {}
 
@@ -128,7 +134,7 @@ export class UniqueCodeService {
   }
   async generateUniqueCode(generateUniqueCodeDto: GenerateUniqueCodeDto) {
     try {
-      const generateUniqueCodeData = new this.uniqueCodeModel({
+      const generateUniqueCodeData = new this.generateUniqueCodeDocument({
         companyId: generateUniqueCodeDto.companyId,
         categoryId: generateUniqueCodeDto.categoryId,
         productId: generateUniqueCodeDto.productId,

@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-export type CompanyDocument = Company & Document;
+export type GenerateUniqueCodeDocument = GenerateUniqueCode & Document;
 @Schema({ timestamps: true, autoIndex: true, skipVersioning: true })
-export class Company {
+export class GenerateUniqueCode {
   @Prop({
     required: true,
     unique: true,
@@ -21,4 +21,5 @@ export class Company {
   })
   productId: string;
 }
-export const CompanySchema = SchemaFactory.createForClass(Company);
+export const GenerateUniqueCodeSchema =
+  SchemaFactory.createForClass(GenerateUniqueCode);
