@@ -33,12 +33,12 @@ export class CompanyService {
   async getAllCompanys() {
     try {
       const company = await this.companyModel.find().exec();
-
-      return {
-        msg: 'All Companys',
-        data: company,
-        success: true,
-      };
+      return company;
+      // return {
+      //   msg: 'All Companys',
+      //   data: company,
+      //   success: true,
+      // };
     } catch (error) {
       console.log(error);
       return { error: error.message, status: HttpStatus.BAD_REQUEST };
