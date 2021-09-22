@@ -8,7 +8,7 @@ import { Company, CompanyDocument } from 'src/schemas/company.schema';
 export class CompanyService {
   constructor(
     @InjectModel(Company.name) private companyModel: Model<CompanyDocument>,
-  ) {}
+  ) { }
 
   async addCompany(companyDto: CompanyDto) {
     try {
@@ -33,12 +33,12 @@ export class CompanyService {
   async getAllCompanys() {
     try {
       const company = await this.companyModel.find().exec();
-      return company;
-      // return {
-      //   msg: 'All Companys',
-      //   data: company,
-      //   success: true,
-      // };
+      // return company;
+      return {
+        msg: 'All Companys',
+        data: company,
+        success: true,
+      };
     } catch (error) {
       console.log(error);
       return { error: error.message, status: HttpStatus.BAD_REQUEST };
