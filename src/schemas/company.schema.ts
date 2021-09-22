@@ -5,11 +5,13 @@ export type CompanyDocument = Company & Document;
 export class Company {
   @Prop({
     required: true,
+    unique: true,
   })
   name: string;
 
   @Prop({
     required: true,
+    unique: true,
   })
   adminEmail: string;
 
