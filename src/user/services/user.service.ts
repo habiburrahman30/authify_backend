@@ -8,10 +8,7 @@ import { IpService } from './ip.service';
 
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectModel(User.name) private userModel: Model<UserDocument>,
-    private ipService: IpService,
-  ) {}
+  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>, private ipService: IpService) { }
 
   async addUser(userDto: UserDto) {
     try {
@@ -38,6 +35,7 @@ export class UserService {
         msg: 'User added successfully',
         data: user,
         success: true,
+
       };
     } catch (error) {
       console.log(error.message);
