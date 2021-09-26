@@ -9,10 +9,13 @@ import { CompanyModule } from './company/company.module';
 import { CategoryModule } from './category/category.module';
 import { UserRoleModule } from './user-role/user-role.module';
 
+// XvnfZvTi4kMzxztH
+
 @Module({
   imports: [
     MongooseModule.forRoot(
-      'mongodb+srv://admin:oCr1fpDWngZlBNHj@cluster0.gryeg.mongodb.net/Product_Auth_Service?retryWrites=true&w=majority',
+      // 'mongodb+srv://admin:oCr1fpDWngZlBNHj@cluster0.gryeg.mongodb.net/Product_Auth_Service?retryWrites=true&w=majority',
+      'mongodb+srv://authify:XvnfZvTi4kMzxztH@authify.ncdqz.mongodb.net/productdbs?retryWrites=true&w=majority',
     ),
     CompanyModule,
     ProductModule,

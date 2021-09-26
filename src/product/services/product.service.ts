@@ -33,11 +33,12 @@ export class ProductService {
 
   async getAllProducts() {
     try {
-      const product = await this.productModel.find().exec();
+      const products = await this.productModel.find().exec();
+      console.log(products);
 
       return {
         msg: 'All Products',
-        data: product,
+        data: products,
         success: true,
       };
     } catch (error) {

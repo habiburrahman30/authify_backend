@@ -1,12 +1,18 @@
-import { IsBoolean, IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 export class UniqueCodeDto {
   @IsString()
   productId: string;
 
   @IsString()
-  code: string;
+  companyName: string;
 
-  @IsBoolean()
-  isVerified: boolean;
+  @IsString()
+  categoryName: string;
+
+  @IsString()
+  productName: string;
+
+  @IsNumber()
+  codeQuantity: number;
 }

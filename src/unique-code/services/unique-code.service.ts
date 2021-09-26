@@ -1,13 +1,10 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { GenerateUniqueCodeDto } from 'src/dto/generate-unique-code.dto';
+
 import { UniqueCodeDto } from 'src/dto/unique-code.dto';
-import {
-  GenerateUniqueCode,
-  GenerateUniqueCodeDocument,
-} from 'src/schemas/generate-unique-code.schema';
-import { UniqueCode, UniqueCodeDocument } from 'src/schemas/unique-code.schema';
+
+import { UniqueCode, UniqueCodeDocument } from 'src/schemas/uniqueCode.schema';
 import { IpService } from 'src/user/services/ip.service';
 
 @Injectable()
@@ -15,26 +12,34 @@ export class UniqueCodeService {
   constructor(
     @InjectModel(UniqueCode.name)
     private uniqueCodeModel: Model<UniqueCodeDocument>,
-    @InjectModel(GenerateUniqueCode.name)
-    private generateUniqueCodeDocument: Model<GenerateUniqueCodeDocument>,
+
     private ipService: IpService,
   ) {}
 
   async addUniqueCode(uniqueCodeDto: UniqueCodeDto) {
     try {
-      const ip = await this.ipService.getCurrentIp();
-      const uniqueCodeData = new this.uniqueCodeModel({
-        productId: uniqueCodeDto.productId,
-        code: uniqueCodeDto.code,
-        isVerified: uniqueCodeDto.isVerified,
-        verifyTime: this.getCurrentDate(),
-        deviceIp: ip,
-      });
-      const uniqueCode = await uniqueCodeData.save();
+      const productDNA = `${uniqueCodeDto.companyName.substr(
+        0,
+        2,
+      )}${uniqueCodeDto.categoryName.substr(
+        0,
+        2,
+      )}${uniqueCodeDto.productName.substr(0, 2)}`;
 
+      for (let index = 0; index < uniqueCodeDto.codeQuantity; index++) {
+        const uniqueCode = `${productDNA}${this.generateString(15)}`.trim();
+
+        const data = new this.uniqueCodeModel();
+        data.productId = uniqueCodeDto.productId;
+        data.code = uniqueCode;
+        data.isVerified = false;
+        data.verifyTime = null;
+        data.deviceIp = await this.ipService.getCurrentIp();
+
+        await data.save();
+      }
       return {
-        msg: 'Unique Code added successfully',
-        data: uniqueCode,
+        msg: 'Generate unique code successfully',
         success: true,
       };
     } catch (error) {
@@ -108,6 +113,7 @@ export class UniqueCodeService {
 
       if (uniqueCode && uniqueCode.isVerified == false) {
         uniqueCode.isVerified = true;
+        uniqueCode.verifyTime = this.getCurrentDate();
         await uniqueCode.save();
         return {
           msg: 'Unique Code verified successfully',
@@ -132,26 +138,22 @@ export class UniqueCodeService {
       return { error: error.message, status: HttpStatus.BAD_REQUEST };
     }
   }
-  async generateUniqueCode(generateUniqueCodeDto: GenerateUniqueCodeDto) {
-    try {
-      const generateUniqueCodeData = new this.generateUniqueCodeDocument({
-        companyId: generateUniqueCodeDto.companyId,
-        categoryId: generateUniqueCodeDto.categoryId,
-        productId: generateUniqueCodeDto.productId,
-      });
-      console.log(generateUniqueCodeData);
-      // const generateUniqueCode = await uniqueCodeData.save();
-      return {
-        msg: 'Generate unique code successfully',
-        data: generateUniqueCodeData,
-        success: true,
-      };
-    } catch (error) {
-      console.log(error);
-      return { error: error.message, status: HttpStatus.BAD_REQUEST };
-    }
-  }
+
   getCurrentDate() {
-    return new Date();
+    return new Date().toDateString();
+  }
+
+  // declare all characters
+
+  generateString(length) {
+    // const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const characters = '0123456789';
+    let result = '-';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+
+    return result;
   }
 }

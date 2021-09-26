@@ -1,11 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 export type UniqueCodeDocument = UniqueCode & Document;
+
 @Schema({ timestamps: true, autoIndex: true, skipVersioning: true })
 export class UniqueCode {
   @Prop({
     required: true,
-    unique: true,
   })
   productId: string;
 
@@ -20,7 +20,7 @@ export class UniqueCode {
   isVerified: boolean;
 
   @Prop({
-    required: true,
+    required: false,
   })
   verifyTime: string;
 
