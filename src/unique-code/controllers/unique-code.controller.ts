@@ -15,12 +15,14 @@ import { UniqueCodeService } from '../services/unique-code.service';
 
 @Controller('/api')
 export class UniqueCodeController {
-  constructor(private readonly uniqueCodeService: UniqueCodeService) {}
+  constructor(private readonly uniqueCodeService: UniqueCodeService) { }
 
   @Post('/unique-code')
   @HttpCode(HttpStatus.OK)
   addUniqueCode(@Body(new ValidationPipe()) uniqueCodeDto: UniqueCodeDto): any {
     return this.uniqueCodeService.addUniqueCode(uniqueCodeDto);
+    // console.log(uniqueCodeDto);
+
   }
 
   @Get('/unique-code')

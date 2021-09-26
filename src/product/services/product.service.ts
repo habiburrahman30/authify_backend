@@ -8,7 +8,7 @@ import { Product, ProductDocument } from 'src/schemas/product.schema';
 export class ProductService {
   constructor(
     @InjectModel(Product.name) private productModel: Model<ProductDocument>,
-  ) {}
+  ) { }
 
   async addProduct(productDto: ProductDto) {
     try {
@@ -34,7 +34,7 @@ export class ProductService {
   async getAllProducts() {
     try {
       const products = await this.productModel.find().exec();
-      console.log(products);
+
 
       return {
         msg: 'All Products',
