@@ -18,13 +18,13 @@ export class UniqueCodeService {
 
   async addUniqueCode(uniqueCodeDto: UniqueCodeDto) {
     try {
-      const productDNA = `${uniqueCodeDto.companyName.substr(
+      const productDNA = `${uniqueCodeDto.companyName.substring(
         0,
         2,
-      )}${uniqueCodeDto.categoryName.substr(
+      )}${uniqueCodeDto.categoryName.substring(
         0,
         2,
-      )}${uniqueCodeDto.productName.substr(0, 2)}`;
+      )}${uniqueCodeDto.productName.substring(0, 2)}`;
 
       for (let index = 0; index < uniqueCodeDto.codeQuantity; index++) {
         const uniqueCode = `${productDNA}${this.generateString(15)}`.trim();

@@ -8,7 +8,7 @@ import { Company, CompanyDocument } from 'src/schemas/company.schema';
 export class CompanyService {
   constructor(
     @InjectModel(Company.name) private companyModel: Model<CompanyDocument>,
-  ) { }
+  ) {}
 
   async addCompany(companyDto: CompanyDto) {
     try {
