@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 export type UniqueCodeDocument = UniqueCode & Document;
 
-@Schema({ timestamps: true, autoIndex: true, skipVersioning: true })
+@Schema()
 export class UniqueCode {
   @Prop({
     required: true,

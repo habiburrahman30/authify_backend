@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 export type CompanyDocument = Company & Document;
-@Schema({ timestamps: true, autoIndex: true, skipVersioning: true })
+@Schema()
 export class Company {
   @Prop({
     required: true,
