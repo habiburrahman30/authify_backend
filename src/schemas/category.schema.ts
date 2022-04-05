@@ -6,6 +6,7 @@ export class Category {
   @Prop({
     required: true,
     unique: true,
+    timestamps: true,
   })
   name: string;
 }
