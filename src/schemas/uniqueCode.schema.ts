@@ -28,5 +28,15 @@ export class UniqueCode {
     required: true,
   })
   deviceIp: string;
+
+  @Prop({
+    required: true,
+  })
+  companyId: string;
+
+  @Prop({
+    required: true,
+  })
+  companyName: string;
 }
 export const UniqueCodeSchema = SchemaFactory.createForClass(UniqueCode);

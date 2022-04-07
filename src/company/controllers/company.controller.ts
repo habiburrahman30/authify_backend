@@ -19,7 +19,7 @@ export class CompanyController {
 
   @Post('/company')
   @HttpCode(HttpStatus.OK)
-  addCompany(@Body(new ValidationPipe()) companyDto: CompanyDto): any {
+  addCompany(@Body() companyDto: CompanyDto): any {
     return this.companyService.addCompany(companyDto);
   }
 

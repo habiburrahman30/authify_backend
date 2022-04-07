@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { UniqueCodeDto } from 'src/dto/unique-code.dto';
+import { Company, CompanyDocument } from 'src/schemas/company.schema';
 
 import { UniqueCode, UniqueCodeDocument } from 'src/schemas/uniqueCode.schema';
 import { IpService } from 'src/user/services/ip.service';
@@ -12,7 +13,8 @@ export class UniqueCodeService {
   constructor(
     @InjectModel(UniqueCode.name)
     private uniqueCodeModel: Model<UniqueCodeDocument>,
-
+    @InjectModel(Company.name)
+    private companyModel: Model<CompanyDocument>,
     private ipService: IpService,
   ) {}
 
@@ -29,8 +31,14 @@ export class UniqueCodeService {
       for (let index = 0; index < uniqueCodeDto.codeQuantity; index++) {
         const uniqueCode = `${productDNA}${this.generateString(15)}`.trim();
 
+        const companyData = await this.companyModel
+          .find({ name: uniqueCodeDto.companyName })
+          .exec();
+
         const data = new this.uniqueCodeModel();
         data.productId = uniqueCodeDto.productId;
+        data.companyId = companyData[0]._id;
+        data.companyName = companyData[0].name;
         data.code = uniqueCode;
         data.isVerified = false;
         data.verifyTime = null;

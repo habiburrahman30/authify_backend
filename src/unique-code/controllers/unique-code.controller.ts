@@ -19,7 +19,7 @@ export class UniqueCodeController {
 
   @Post('/unique-code')
   @HttpCode(HttpStatus.OK)
-  addUniqueCode(@Body(new ValidationPipe()) uniqueCodeDto: UniqueCodeDto): any {
+  addUniqueCode(@Body() uniqueCodeDto: UniqueCodeDto): any {
     return this.uniqueCodeService.addUniqueCode(uniqueCodeDto);
     // console.log(uniqueCodeDto);
   }
