@@ -154,7 +154,6 @@ export class UniqueCodeService {
   }
 
   // declare all characters
-
   generateString(length) {
     // const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const characters = '0123456789';
