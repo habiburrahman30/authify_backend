@@ -125,12 +125,14 @@ export class UniqueCodeService {
         await uniqueCode.save();
         return {
           msg: 'Unique Code verified successfully',
+          data: uniqueCode,
           success: true,
           status: HttpStatus.OK,
         };
       } else if (uniqueCode && uniqueCode.isVerified == true) {
         return {
           msg: 'Unique Code already used',
+          data: uniqueCode,
           success: false,
           status: HttpStatus.FORBIDDEN,
         };
