@@ -13,6 +13,8 @@ export class CategoryService {
 
   async addCategory(categoryDto: CategoryDto) {
     try {
+      // console.log(categoryDto.name);
+
       const categoryData = new this.categoryModel({
         name: categoryDto.name,
       });

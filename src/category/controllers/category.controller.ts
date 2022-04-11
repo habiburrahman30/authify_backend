@@ -15,11 +15,11 @@ import { CategoryService } from '../services/category.service';
 
 @Controller('/api')
 export class CategoryController {
-  constructor(private readonly categoryService: CategoryService) { }
+  constructor(private readonly categoryService: CategoryService) {}
 
   @Post('/category')
   @HttpCode(HttpStatus.OK)
-  addCategory(@Body(new ValidationPipe()) categoryDto: CategoryDto): any {
+  addCategory(@Body() categoryDto: CategoryDto): any {
     return this.categoryService.addCategory(categoryDto);
   }
 
@@ -39,7 +39,10 @@ export class CategoryController {
   }
 
   @Put('/category/:id')
-  updateCategoryById(@Body(new ValidationPipe()) categoryDto: CategoryDto, @Param('id') id) {
+  updateCategoryById(
+    @Body(new ValidationPipe()) categoryDto: CategoryDto,
+    @Param('id') id,
+  ) {
     return this.categoryService.updateCategoryById(categoryDto, id);
   }
 }

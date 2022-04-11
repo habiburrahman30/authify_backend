@@ -19,7 +19,7 @@ export class ProductController {
 
   @Post('/product')
   @HttpCode(HttpStatus.OK)
-  addProduct(@Body(new ValidationPipe()) productDto: ProductDto): any {
+  addProduct(@Body() productDto: ProductDto): any {
     return this.productService.addProduct(productDto);
   }
 
